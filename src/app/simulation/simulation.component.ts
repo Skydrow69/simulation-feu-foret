@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ConfigService } from '../services/config.service';
 import { SimulationService } from '../services/simulation.service';
 import { Cell, SimulationConfig } from '../../app/model/simulation.model';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-simulation',
@@ -9,30 +10,31 @@ import { Cell, SimulationConfig } from '../../app/model/simulation.model';
   styleUrls: ['./simulation.component.scss']
 })
 export class SimulationComponent implements OnInit {
+  public simulationIsRunning$!: Observable<boolean>;
   public grid: Cell[][] = [];
-  public simulationService!: SimulationService;
-  constructor(private configService: ConfigService, private _simulationService: SimulationService) {
-    this.simulationService = _simulationService;
+  constructor(private configService: ConfigService, public simulationService: SimulationService) {
+
   }
 
   ngOnInit(): void {
-    this.grid = this._simulationService.getGrid();
+    this.simulationIsRunning$ = this.simulationService.isSimulationRunning$;
     this.configService.getConfig().subscribe((config: SimulationConfig) => {
-      this._simulationService.initializeSimulation(config);
+      this.simulationService.initializeSimulation(config);
     });
   }
-
+  
   startSimulation(): void {
-    this._simulationService.startSimulation();
+    this.simulationService.lightInitialFires();
+  
+    this.simulationService.startSimulation();
   }
+  
   stopSimulation(): void {
-    const simulationInterval: NodeJS.Timeout | null = this._simulationService.getSimulationInterval();
+    const simulationInterval: NodeJS.Timeout | null = this.simulationService.getSimulationInterval();
   
     if (simulationInterval !== null) {
-      clearInterval(simulationInterval);
-      // Faites d'autres opérations nécessaires
-  
-      this._simulationService.stopSimulation(simulationInterval);
+      clearInterval(simulationInterval);  
+      this.simulationService.stopSimulation();
     }
   }
 }  

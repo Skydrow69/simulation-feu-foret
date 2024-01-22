@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { GridComponent } from './grid/grid.component';
 import { CellComponent } from './cell/cell.component';
 import { SimulationComponent } from './simulation/simulation.component';
-import { HttpClientModule } from '@angular/common/http'; // Importez le module HttpClientModule
+import { HttpClientModule } from '@angular/common/http'; 
 import { SimulationService } from './services/simulation.service';
 import { ConfigService } from './services/config.service';
 

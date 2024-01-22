@@ -1,10 +1,8 @@
-<button (click)="startSimulation()" [disabled]="simulationService.isSimulationRunning$ | async">Start Simulation</button>
-<button (click)="stopSimulation()">Stop Simulation</button>
+<button (click)="startSimulation()" [disabled]="simulationIsRunning$">Start Simulation</button>
+<button (click)="stopSimulation()" [disabled]="!simulationIsRunning$">Stop Simulation</button>
 
-<div *ngIf="simulationService.isSimulationRunning$ | async">
-  <!-- Display the grid dynamically based on the simulation state -->
+<div *ngIf="simulationIsRunning$">
   <div *ngFor="let row of simulationService.getGrid()">
     <div *ngFor="let cell of row" class="cell" [ngClass]="{'accessible on-fire': cell.isOnFire}"></div>
   </div>
 </div>
-

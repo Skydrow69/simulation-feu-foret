@@ -6,8 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ConfigService {
-  private configUrl = 'assets/config.json'; // Emplacement de votre fichier de configuration
-
+  private configUrl = 'assets/config.json'; 
   constructor(private http: HttpClient) {}
 
   getConfig(): Observable<any> {
